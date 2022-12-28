@@ -12,6 +12,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.stanleyguevara.dustytools.ui.theme.DustyToolsTheme
 import timber.log.Timber
 
@@ -21,7 +25,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DustyToolsTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-                    NextScreenButton { Timber.d("I was clicked") }
+                    MainScreen()
                 }
             }
         }
@@ -29,22 +33,40 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+private fun MainScreen() {
+    val navController = rememberNavController()
+    NavGraph(navController)
 }
 
 @Composable
-fun NextScreenButton(onClick: () -> Unit) {
-    Button(modifier = Modifier.wrapContentSize(), onClick = onClick) {
-        Text(text = "I'm a button")
+private fun LoginScreen(navController: NavHostController) {
+    LoginButton { navController.navigate("home") }
+}
+
+@Composable
+private fun HomeScreen() {
+    Text(modifier = Modifier.wrapContentSize(), text = "Home screen")
+}
+
+@Composable
+fun NavGraph(navController: NavHostController) {
+    NavHost(
+        navController = navController,
+        startDestination = "login"
+    ) {
+        composable(route = "login") {
+            LoginScreen(navController)
+        }
+        composable(route = "home") {
+            HomeScreen()
+        }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    DustyToolsTheme {
-        Greeting("Android")
+fun LoginButton(onClick: () -> Unit) {
+    Button(modifier = Modifier.wrapContentSize(), onClick = onClick) {
+        Text(text = "Login button")
     }
 }
 
@@ -52,6 +74,6 @@ fun DefaultPreview() {
 @Composable
 fun NextScreenButtonPreview() {
     DustyToolsTheme {
-        NextScreenButton { Timber.d("I was clicked") }
+        LoginButton { Timber.d("I was clicked") }
     }
 }
