@@ -20,16 +20,7 @@ fun PreviewConversation() {
     DustyToolsTheme {
         Surface {
             Conversation(
-                messages = listOf(
-                    Message.sample(),
-                    Message("Chomik", "Przechodziłem obok kiosku ruchu i mi się skojarzyło z ruchaniem, hehe"),
-                    Message("Maciej", "Przestań się opierdalać, wyjdź ze strefy komfortu"),
-                    Message("Grzesiek", "Elo ziomie lecimy gdzieś na misję"),
-                    Message("Wojtek", "Makitka najlepsza!"),
-                    Message("Stachu", "Wojtek powiedz coś po designerowemu"),
-                    Message("Wojtek", "Lorem ipsum dolor sit amet consectetur adipiscing elit sed eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor reprehenderit voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim est laborum"),
-                )
-            )
+                messages = Message.sampleList())
         }
     }
 }
