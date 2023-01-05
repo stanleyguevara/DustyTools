@@ -2,6 +2,7 @@ package com.stanleyguevara.dustytools.compose
 
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,8 +12,10 @@ import com.stanleyguevara.dustytools.ui.theme.DustyToolsTheme
 import timber.log.Timber
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
-    LoginButton { navController.navigate("home") }
+fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController) {
+    Surface(modifier = modifier) {
+        LoginButton { navController.navigate("home") }
+    }
 }
 
 @Composable

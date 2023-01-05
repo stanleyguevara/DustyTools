@@ -3,7 +3,9 @@ package com.stanleyguevara.dustytools
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,29 +19,29 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DustyToolsTheme {
-                MainScreen()
+                MainScreen(modifier = Modifier.fillMaxSize())
             }
         }
     }
 }
 
 @Composable
-private fun MainScreen() {
+private fun MainScreen(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    NavGraph(navController)
+    NavGraph(modifier = modifier, navController)
 }
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(modifier: Modifier = Modifier, navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = "login"
     ) {
         composable(route = "login") {
-            LoginScreen(navController)
+            LoginScreen(modifier = modifier, navController)
         }
         composable(route = "home") {
-            HomeScreen()
+            HomeScreen(modifier = modifier, navController)
         }
     }
 }

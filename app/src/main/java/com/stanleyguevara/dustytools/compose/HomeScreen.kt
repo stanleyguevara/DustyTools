@@ -17,12 +17,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.stanleyguevara.dustytools.R
 import com.stanleyguevara.dustytools.ui.theme.DustyToolsTheme
 
 @Composable
-fun HomeScreen() {
-    Surface {
+fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController) {
+    Surface(modifier = modifier) {
         Conversation(messages = Message.sampleListLong())
     }
 }
