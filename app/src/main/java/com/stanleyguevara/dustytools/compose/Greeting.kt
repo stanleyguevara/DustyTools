@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,7 +31,7 @@ fun MyApp(
 @Composable
 private fun Greeting(name: String, onClick: () -> Unit) {
     Surface(
-        color = MaterialTheme.colors.primary,
+        color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
         Row(modifier = Modifier
@@ -38,7 +41,7 @@ private fun Greeting(name: String, onClick: () -> Unit) {
                 Text(text = "Hello")
                 Text(text = name)
             }
-            Button(onClick = onClick, Modifier.background(color = MaterialTheme.colors.background)) {
+            Button(onClick = onClick, Modifier.background(color = MaterialTheme.colorScheme.background)) {
                 Text(text = "Show more")
             }
         }
