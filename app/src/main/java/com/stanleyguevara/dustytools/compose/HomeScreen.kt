@@ -44,7 +44,7 @@ fun MessageCard(message: Message) {
         Column {
             Text(
                 text = message.author,
-                color = MaterialTheme.colorScheme.secondaryContainer,
+                color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.titleSmall,
             )
             Spacer(modifier = Modifier.height(4.dp))
@@ -56,9 +56,13 @@ fun MessageCard(message: Message) {
 
             Surface(
                 shape = MaterialTheme.shapes.medium,
-                shadowElevation = 1.dp,
+                tonalElevation = 1.dp,
                 color = surfaceColor,
                 modifier = Modifier
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        shape = MaterialTheme.shapes.large)
                     .animateContentSize()
                     .padding(1.dp)
             ) {
@@ -68,7 +72,7 @@ fun MessageCard(message: Message) {
                         .clickable { isExpanded = !isExpanded }
                         .padding(all = 4.dp),
                     maxLines = if (isExpanded) Int.MAX_VALUE else 1,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
         }
