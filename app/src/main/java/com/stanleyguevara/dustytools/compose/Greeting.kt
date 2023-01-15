@@ -1,15 +1,11 @@
 package com.stanleyguevara.dustytools.compose
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,6 +14,22 @@ import timber.log.Timber
 
 @Composable
 fun MyApp(
+    modifier: Modifier = Modifier,
+) {
+    var shouldShowOnboarding by remember { mutableStateOf(true) }
+
+    if (shouldShowOnboarding) {
+        OnboardingScreen(
+            modifier = modifier,
+            onContinueClicked = { shouldShowOnboarding = false }
+        )
+    } else {
+        Greetings(modifier = modifier)
+    }
+}
+
+@Composable
+fun Greetings(
     modifier: Modifier = Modifier,
     names: List<String> = listOf("World", "Compose"),
 ) {
@@ -34,15 +46,22 @@ private fun Greeting(name: String, onClick: () -> Unit) {
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
+        var isExpanded by remember { mutableStateOf(false) }
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(24.dp)) {
-            Column(Modifier.weight(1.0f)) {
+            Column(Modifier
+                .weight(1.0f)
+                .padding(bottom = if (isExpanded) 56.dp else 0.dp)
+            ) {
                 Text(text = "Hello")
                 Text(text = name)
             }
-            Button(onClick = onClick, Modifier.background(color = MaterialTheme.colorScheme.background)) {
-                Text(text = "Show more")
+            ElevatedButton(onClick = {
+                isExpanded = isExpanded.not()
+                onClick.invoke()
+            }) {
+                Text(text = if (isExpanded) "Show less" else "Show more")
             }
         }
     }
@@ -52,6 +71,6 @@ private fun Greeting(name: String, onClick: () -> Unit) {
 @Composable
 private fun GreetingPreview() {
     DustyToolsTheme {
-        MyApp()
+        MyApp(modifier = Modifier.fillMaxSize())
     }
 }

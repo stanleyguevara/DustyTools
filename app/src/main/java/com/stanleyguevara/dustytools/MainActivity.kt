@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.stanleyguevara.dustytools.compose.HomeScreen
 import com.stanleyguevara.dustytools.compose.LoginScreen
+import com.stanleyguevara.dustytools.compose.MyApp
 import com.stanleyguevara.dustytools.ui.theme.DustyToolsTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DustyToolsTheme {
-                MainScreen(modifier = Modifier.fillMaxSize())
+                MyApp(modifier = Modifier.fillMaxSize())
             }
         }
     }
