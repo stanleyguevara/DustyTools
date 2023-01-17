@@ -1,11 +1,20 @@
 package com.stanleyguevara.dustytools.compose
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -16,7 +25,7 @@ import timber.log.Timber
 fun MyApp(
     modifier: Modifier = Modifier,
 ) {
-    var shouldShowOnboarding by remember { mutableStateOf(true) }
+    var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
 
     if (shouldShowOnboarding) {
         OnboardingScreen(
@@ -31,10 +40,10 @@ fun MyApp(
 @Composable
 fun Greetings(
     modifier: Modifier = Modifier,
-    names: List<String> = listOf("World", "Compose"),
+    names: List<String> = List(100) { "Number $it" },
 ) {
-    Column(modifier = modifier.padding(vertical = 4.dp)) {
-        for (name in names) {
+    LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
+        items(items = names) { name ->
             Greeting(name = name) { Timber.d("Button clicked") }
         }
     }
@@ -46,13 +55,22 @@ private fun Greeting(name: String, onClick: () -> Unit) {
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
-        var isExpanded by remember { mutableStateOf(false) }
+        var isExpanded by rememberSaveable { mutableStateOf(false) }
+
+        val extraPadding by animateDpAsState(
+            targetValue = if (isExpanded) 128.dp else 56.dp,
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioHighBouncy,
+                stiffness = Spring.StiffnessMedium,
+            )
+        )
+
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(24.dp)) {
             Column(Modifier
                 .weight(1.0f)
-                .padding(bottom = if (isExpanded) 56.dp else 0.dp)
+                .padding(bottom = extraPadding)
             ) {
                 Text(text = "Hello")
                 Text(text = name)
@@ -67,10 +85,18 @@ private fun Greeting(name: String, onClick: () -> Unit) {
     }
 }
 
+/*@Preview(showBackground = true, widthDp = 320)
+@Composable
+private fun GreetingsPreview() {
+    DustyToolsTheme {
+        Greetings(modifier = Modifier.fillMaxSize())
+    }
+}*/
+
 @Preview(showBackground = true, widthDp = 320)
 @Composable
 private fun GreetingPreview() {
     DustyToolsTheme {
-        MyApp(modifier = Modifier.fillMaxSize())
+        Greeting(name = "Buddy") {}
     }
 }
