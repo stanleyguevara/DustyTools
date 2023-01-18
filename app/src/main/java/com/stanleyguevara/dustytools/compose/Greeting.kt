@@ -54,35 +54,23 @@ fun Greetings(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun Greeting(name: String, onClick: () -> Unit) {
     Surface(
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
+
         var isExpanded by rememberSaveable { mutableStateOf(false) }
 
-        val extraPadding by animateDpAsState(
-            targetValue = if (isExpanded) 128.dp else 0.dp,
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioNoBouncy,
-                stiffness = Spring.StiffnessMedium,
-            )
-        )
-
-        Box(
-            modifier = Modifier.padding(24.dp),
-            contentAlignment = Alignment.BottomCenter,
+        Collapser(
+            isExpanded = isExpanded,
+            onClick = { isExpanded = isExpanded.not() },
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.padding(24.dp)
             ) {
-                Column(
-                    Modifier
-                        .weight(1.0f)
-                        .padding(bottom = extraPadding)
-                ) {
+                Column(Modifier.weight(1.0f)) {
                     Text(text = "Hello")
                     Text(text = name)
                 }
@@ -93,24 +81,64 @@ private fun Greeting(name: String, onClick: () -> Unit) {
                     Text(text = if (isExpanded) "Show less" else "Show more")
                 }
             }
-            AnimatedVisibility(
-                enter = scaleIn(animationSpec = tween(durationMillis = 100, delayMillis = 200)),
-                exit = scaleOut(animationSpec = tween(durationMillis = 100, delayMillis = 0)),
-                visible = isExpanded
-            ) {
-                IconButton(onClick = {
-                    isExpanded = isExpanded.not()
-                    onClick.invoke()
-                }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                        contentDescription = "Collapse icon",
-                        tint = MaterialTheme.colorScheme.surface,
-                    )
-                }
+        }
+    }
+}
 
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+private fun Collapser(
+    isExpanded: Boolean,
+    onClick: () -> Unit,
+    content: @Composable BoxScope.() -> Unit,
+) {
+
+    val extraPadding by animateDpAsState(
+        targetValue = if (isExpanded) 128.dp else 0.dp,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioNoBouncy,
+            stiffness = Spring.StiffnessMedium,
+        )
+    )
+
+    Box(
+        contentAlignment = Alignment.TopCenter,
+    ) {
+        content.invoke(this)
+        AnimatedVisibility(
+            visible = isExpanded,
+            enter = scaleIn(animationSpec = tween(durationMillis = 100, delayMillis = 200)),
+            exit = scaleOut(animationSpec = tween(durationMillis = 100, delayMillis = 0)),
+            modifier = Modifier.padding(top = extraPadding)
+        ) {
+            IconButton(onClick = {
+                onClick.invoke()
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    contentDescription = "Collapse icon",
+                    tint = MaterialTheme.colorScheme.surface,
+                )
             }
         }
+    }
+}
+
+@Preview(showBackground = true, widthDp = 320)
+@Composable
+private fun CollapserPreview() {
+    DustyToolsTheme {
+        Collapser(isExpanded = true, onClick = { }) {
+            Greeting(name = "Buddy") {}
+        }
+    }
+}
+
+@Preview(showBackground = true, widthDp = 320)
+@Composable
+private fun GreetingPreview() {
+    DustyToolsTheme {
+        Greeting(name = "Buddy") {}
     }
 }
 
@@ -121,11 +149,3 @@ private fun GreetingsPreview() {
         Greetings(modifier = Modifier.fillMaxSize())
     }
 }*/
-
-@Preview(showBackground = true, widthDp = 320)
-@Composable
-private fun GreetingPreview() {
-    DustyToolsTheme {
-        Greeting(name = "Buddy") {}
-    }
-}
