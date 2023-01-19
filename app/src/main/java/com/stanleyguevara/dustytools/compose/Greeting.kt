@@ -13,11 +13,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -25,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.stanleyguevara.dustytools.R
 import com.stanleyguevara.dustytools.ui.theme.DustyToolsTheme
-import timber.log.Timber
+import kotlinx.coroutines.launch
 
 @Composable
 fun MyApp(
@@ -40,8 +37,29 @@ fun MyApp(
                 onContinueClicked = { shouldShowOnboarding = false }
             )
         } else {
-            Greetings(modifier = modifier)
+            GreetingsScreen(modifier = modifier)
         }
+    }
+}
+
+@Composable
+fun GreetingsScreen(modifier: Modifier = Modifier) {
+    val snackState = remember { SnackbarHostState() }
+    val snackScope = rememberCoroutineScope()
+
+    Box(modifier = modifier) {
+        Greetings(
+            modifier = modifier,
+            onClickGreeting = {
+                snackScope.launch {
+                    snackState.showSnackbar("Sup? Here's some snacks.")
+                }
+            },
+        )
+        SnackbarHost(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            hostState = snackState,
+        )
     }
 }
 
@@ -49,10 +67,11 @@ fun MyApp(
 fun Greetings(
     modifier: Modifier = Modifier,
     names: List<String> = List(100) { "Number $it" },
+    onClickGreeting: () -> Unit,
 ) {
     LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
         items(items = names) { name ->
-            Greeting(name = name) { Timber.d("Button clicked") }
+            Greeting(name = name) { onClickGreeting() }
         }
     }
 }
