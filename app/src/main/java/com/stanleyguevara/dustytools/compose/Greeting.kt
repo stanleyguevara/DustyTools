@@ -1,5 +1,6 @@
 package com.stanleyguevara.dustytools.compose
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Spring
@@ -32,13 +33,15 @@ fun MyApp(
 ) {
     var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
 
-    if (shouldShowOnboarding) {
-        OnboardingScreen(
-            modifier = modifier,
-            onContinueClicked = { shouldShowOnboarding = false }
-        )
-    } else {
-        Greetings(modifier = modifier)
+    Surface(modifier) {
+        if (shouldShowOnboarding) {
+            OnboardingScreen(
+                modifier = modifier,
+                onContinueClicked = { shouldShowOnboarding = false }
+            )
+        } else {
+            Greetings(modifier = modifier)
+        }
     }
 }
 
@@ -57,7 +60,7 @@ fun Greetings(
 @Composable
 private fun Greeting(name: String, onClick: () -> Unit) {
     Surface(
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.surfaceVariant,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
 
@@ -117,7 +120,7 @@ private fun Collapser(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_launcher_foreground),
                     contentDescription = "Collapse icon",
-                    tint = MaterialTheme.colorScheme.surface,
+                    tint = MaterialTheme.colorScheme.primary,
                 )
             }
         }
@@ -128,17 +131,31 @@ private fun Collapser(
 @Composable
 private fun CollapserPreview() {
     DustyToolsTheme {
-        Collapser(isExpanded = true, onClick = { }) {
-            Greeting(name = "Buddy") {}
+        Surface {
+            Collapser(isExpanded = true, onClick = { }) {
+                Greeting(name = "Buddy") {}
+            }
         }
     }
 }
 
 @Preview(showBackground = true, widthDp = 320)
 @Composable
-private fun GreetingPreview() {
+private fun GreetingPreviewLight() {
     DustyToolsTheme {
-        Greeting(name = "Buddy") {}
+        Surface {
+            Greeting(name = "Buddy") {}
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES, widthDp = 320)
+@Composable
+private fun GreetingPreviewDark() {
+    DustyToolsTheme {
+        Surface {
+            Greeting(name = "Buddy") {}
+        }
     }
 }
 
