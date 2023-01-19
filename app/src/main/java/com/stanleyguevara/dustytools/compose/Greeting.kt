@@ -61,6 +61,7 @@ fun Greetings(
 private fun Greeting(name: String, onClick: () -> Unit) {
     Surface(
         color = MaterialTheme.colorScheme.surfaceVariant,
+        shape = MaterialTheme.shapes.medium,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
 
