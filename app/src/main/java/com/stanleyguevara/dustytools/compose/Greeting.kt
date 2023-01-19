@@ -118,7 +118,7 @@ private fun Collapser(
                 onClick.invoke()
             }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    painter = painterResource(id = R.drawable.ic_chevron_up),
                     contentDescription = "Collapse icon",
                     tint = MaterialTheme.colorScheme.primary,
                 )
