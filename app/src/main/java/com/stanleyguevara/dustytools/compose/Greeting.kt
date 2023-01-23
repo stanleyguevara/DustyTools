@@ -1,17 +1,16 @@
 package com.stanleyguevara.dustytools.compose
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -78,9 +77,10 @@ fun Greetings(
 
 @Composable
 private fun Greeting(name: String, onClick: () -> Unit) {
-    Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        shape = MaterialTheme.shapes.medium,
+    ElevatedCard(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        ),
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
 
@@ -96,12 +96,22 @@ private fun Greeting(name: String, onClick: () -> Unit) {
                 Column(Modifier.weight(1.0f)) {
                     Text(text = "Hello")
                     Text(text = name)
+                    if (isExpanded) {
+                        Text(
+                            text = ("Composem ipsum color sit lazy, \n" +
+                                    "padding theme elit, sed do bouncy. \n").repeat(4),
+                        )
+                    }
                 }
-                ElevatedButton(onClick = {
+                IconButton(onClick = {
                     isExpanded = isExpanded.not()
                     onClick.invoke()
                 }) {
-                    Text(text = if (isExpanded) "Show less" else "Show more")
+                    Icon(
+                        imageVector = if (isExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                        contentDescription = if (isExpanded) "Show less" else "Show more",
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
                 }
             }
         }
@@ -115,24 +125,21 @@ private fun Collapser(
     onClick: () -> Unit,
     content: @Composable BoxScope.() -> Unit,
 ) {
-
-    val extraPadding by animateDpAsState(
-        targetValue = if (isExpanded) 128.dp else 0.dp,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = Spring.StiffnessMedium,
-        )
-    )
-
     Box(
         contentAlignment = Alignment.TopCenter,
+        modifier = Modifier.animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessMedium,
+            )
+        )
     ) {
         content.invoke(this)
         AnimatedVisibility(
+            modifier = Modifier.align(Alignment.BottomCenter),
             visible = isExpanded,
             enter = scaleIn(animationSpec = tween(durationMillis = 100, delayMillis = 200)),
             exit = scaleOut(animationSpec = tween(durationMillis = 100, delayMillis = 0)),
-            modifier = Modifier.padding(top = extraPadding)
         ) {
             IconButton(onClick = {
                 onClick.invoke()
