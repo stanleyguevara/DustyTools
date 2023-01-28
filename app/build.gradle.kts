@@ -51,21 +51,26 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.activity:activity-compose:1.6.1")
     implementation(
+        Libs.kotlinCoroutines,
+        Libs.kotlinImmutable,
+
+        Libs.daggerHilt,
+
+        Libs.androidxCore,
+        Libs.androidxLifecycle,
+        Libs.androidxActivityCompose,
+        Libs.androidxNavigationCompose,
+
         Libs.composeCore,
         Libs.composeIcons,
+
+        Libs.timber,
     )
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
-    implementation("com.google.dagger:hilt-android:2.44.2")
-    implementation("androidx.navigation:navigation-compose:2.5.3")
-    implementation("com.jakewharton.timber:timber:5.0.1")
-    kapt("com.google.dagger:hilt-compiler:2.44.2")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation(Libs.androidTest)
+
+    kapt(Libs.daggerCompiler)
+
+    testImplementation(Libs.jUnit)
+    androidTestImplementation(Libs.androidxTest)
     debugImplementation(Libs.debug)
 }

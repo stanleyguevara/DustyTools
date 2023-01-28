@@ -12,6 +12,9 @@ fun DependencyHandler.androidTestImplementation(vararg dependencies: Any) =
 fun DependencyHandler.testImplementation(vararg dependencies: Any) =
     addNamed("testImplementation", *dependencies)
 
+fun DependencyHandler.kapt(vararg dependencies: Any) =
+    addNamed("kapt", *dependencies)
+
 fun DependencyHandler.addNamed(name: String, vararg dependencies: Any) {
     for (dependency in dependencies) {
         if (dependency is Iterable<*>) {
