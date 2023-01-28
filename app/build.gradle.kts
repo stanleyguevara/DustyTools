@@ -1,4 +1,5 @@
 plugins {
+    id("com.github.ben-manes.versions")
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
@@ -50,7 +51,6 @@ android {
 }
 
 dependencies {
-
     implementation(
         Libs.kotlinCoroutines,
         Libs.kotlinImmutable,
